@@ -34,33 +34,18 @@ class Automobile:
         self.province_list=[]
         self.title_list=[]
         self.marks_list=[] 
+        
       
     def main(self): 
         PATH="C:/Users/lenovo/Desktop/web/chromedriver"
         self.driver = webdriver.Chrome(PATH)
-        self.driver.get("https://www.sahibinden.com/kategori/otomobil")
-        
-        box_link2=self.driver.find_element_by_class_name("jspPane")
-        li=box_link2.find_elements_by_tag_name("li")
-        
-        for i in li:
-            aTag=i.find_element_by_tag_name("a")
-            title = aTag.get_attribute("title")
-            self.title_list.append(title)
-    
+        # self.driver.get("https://www.sahibinden.com/kategori/otomobil")
         for self.j in self.marks:
               self.driver.maximize_window()
-              self.driver.find_element_by_xpath(
-                   "//*[@id='container']/div/div[1]/div[1]/div[2]/ul/div/div[1]/li["+str(self.j)
-                   +"]/a").click()
- 
+              self.driver.get("https://www.sahibinden.com/"+str(self.j))
               self.main_process()
-              self.driver.get("https://www.sahibinden.com/kategori/otomobil")
         self.send_mangodb() 
         self.driver.close()
-        
-        
-              
     def main_process(self):
         
         while True:
@@ -88,9 +73,7 @@ class Automobile:
                     time.sleep(2)
                 except (NoSuchElementException,StaleElementReferenceException):
                      break
-        self.data_process()  
-
-         
+        self.data_process()     
 
     def data_process(self):
         
@@ -140,7 +123,7 @@ class Automobile:
             df9=pd.DataFrame(province,columns=['il-ilce'])
         
             for i in range(len(df9)-len(self.marks_list)):
-                 self.marks_list.append(self.title_list[self.j-1])    
+                 self.marks_list.append(self.j)    
               
             df1=pd.DataFrame(self.marks_list,columns=['marks'])  
             
@@ -157,9 +140,7 @@ class Automobile:
             self.date_list=[]
             self.province_list=[]
             self.marks_list=[]
-         
- 
-    
+            
     def send_mangodb(self):
         try:
           
